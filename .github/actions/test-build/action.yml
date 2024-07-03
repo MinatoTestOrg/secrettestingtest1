@@ -30,8 +30,8 @@ runs:
   - name: Building project...
     shell: sh
     run: |
-      sed -i 's/rappitpipelineuser/${{inputs.ARTIFACTORY_USER}}/' .m2/settings.xml
-      sed -i 's/Ufdu!VPeZS6cbyNa/${{inputs.ARTIFACTORY_PASS}}/' .m2/settings.xml
+      sed -i 's/${r"${env.ARTIFACTORY_USER}"}/${{inputs.ARTIFACTORY_USER}}/' .m2/settings.xml
+      sed -i 's/${r"${env.ARTIFACTORY_PASS}"}/${{inputs.ARTIFACTORY_PASS}}/' .m2/settings.xml
       npm install -g @angular/cli
       mvn -s .m2/settings.xml --batch-mode clean install -P test
       mvn -f BackendApp/pom.xml jib:build -P cloud-run-test -s .m2/settings.xml --batch-mode -X -D IMAGE_VERSION_ID=${{inputs.IMAGE_VERSION_ID}} -D COMMIT_ID=${GITHUB_SHA}
